@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shalini V — AI/ML Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0D10;
+    --bg-elev:#11141A;
+    --line:#1E2228;
+    --text:#EDEEF0;
+    --muted:#7A828E;
+    --accent:#5EEAD4;
+    --accent-dim:#274C47;
+    --warn:#F2B25C;
+    --maxw:980px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;}
+  ::selection{background:var(--accent); color:#04201C;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+  section{padding:96px 0;}
+  @media (max-width:640px){ section{padding:64px 0;} }
+
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--accent);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px; height:7px;
+    background:var(--accent);
+    border-radius:50%;
+    box-shadow:0 0 0 4px var(--accent-dim);
+  }
+
+  h1,h2,h3{font-family:'Inter',sans-serif; font-weight:800; letter-spacing:-0.02em;}
+
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,13,16,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:64px;
+  }
+  .brand{font-family:'JetBrains Mono',monospace; font-weight:600; font-size:15px; letter-spacing:0.02em;}
+  .brand span{color:var(--accent);}
+  .navlinks{display:flex; gap:28px; font-size:14px; color:var(--muted);}
+  .navlinks a{text-decoration:none; transition:color .15s;}
+  .navlinks a:hover, .navlinks a:focus-visible{color:var(--text);}
+  .navlinks a:focus-visible{outline:1px solid var(--accent); outline-offset:4px;}
+  @media (max-width:640px){ .navlinks{display:none;} }
+
+  .hero{padding-top:88px; padding-bottom:80px;}
+  .hero-grid{display:grid; grid-template-columns:1.15fr 0.85fr; gap:56px; align-items:center;}
+  @media (max-width:860px){ .hero-grid{grid-template-columns:1fr;} }
+
+  .hero h1{font-size:clamp(34px,5vw,52px); line-height:1.08; margin-bottom:18px;}
+  .hero h1 .hl{color:var(--accent);}
+  .hero p.lead{font-size:17px; color:var(--muted); max-width:480px; margin-bottom:32px;}
+
+  .hero-cta{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13.5px;
+    padding:13px 22px;
+    border-radius:6px;
+    text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:transform .15s, border-color .15s, background .15s;
+  }
+  .btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .btn-primary{background:var(--accent); color:#04201C; font-weight:600;}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{border:1px solid var(--line); color:var(--text);}
+  .btn-ghost:hover{border-color:var(--accent); transform:translateY(-2px);}
+
+  .detect-card{
+    position:relative;
+    background:var(--bg-elev);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:34px 28px;
+    overflow:hidden;
+  }
+  .detect-card::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:28px 28px;
+    opacity:0.35;
+  }
+  .bbox{
+    position:relative;
+    z-index:2;
+    border:1.5px solid var(--accent);
+    border-radius:4px;
+    padding:22px 20px 18px;
+    background:rgba(94,234,212,0.04);
+  }
+  .bbox::before, .bbox::after, .bbox .c1, .bbox .c2{
+    content:""; position:absolute; width:10px; height:10px;
+    border:2px solid var(--accent);
+  }
+  .bbox::before{top:-2px; left:-2px; border-right:none; border-bottom:none;}
+  .bbox::after{top:-2px; right:-2px; border-left:none; border-bottom:none;}
+  .bbox .c1{bottom:-2px; left:-2px; border-right:none; border-top:none;}
+  .bbox .c2{bottom:-2px; right:-2px; border-left:none; border-top:none;}
+
+  .bbox-tag{
+    position:absolute; top:-13px; left:14px;
+    background:var(--accent); color:#04201C;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px; font-weight:600;
+    padding:3px 9px; border-radius:3px;
+    letter-spacing:0.02em;
+  }
+  .bbox-name{font-size:22px; font-weight:800; margin-bottom:4px;}
+  .bbox-role{font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--accent); margin-bottom:16px;}
+  .bbox-meta{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted); display:grid; gap:6px;}
+  .bbox-meta div{display:flex; justify-content:space-between; border-top:1px dashed var(--line); padding-top:6px;}
+  .bbox-meta div:first-child{border-top:none; padding-top:0;}
+
+  .sec-head{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:44px; flex-wrap:wrap; gap:10px;}
+  .sec-head h2{font-size:clamp(24px,3vw,32px);}
+  .sec-head .count{font-family:'JetBrains Mono',monospace; color:var(--muted); font-size:13px;}
+
+  .skill-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+  @media (max-width:640px){ .skill-grid{grid-template-columns:1fr;} }
+  .skill-block{border:1px solid var(--line); border-radius:10px; padding:22px 24px; background:var(--bg-elev);}
+  .skill-block h3{font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); font-weight:600; margin-bottom:14px;}
+  .chip-row{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    font-family:'JetBrains Mono',monospace; font-size:12.5px;
+    border:1px solid var(--line); border-radius:5px;
+    padding:6px 11px; color:var(--text);
+  }
+
+  .tl{position:relative; padding-left:28px; border-left:1px solid var(--line);}
+  .tl-item{position:relative; padding-bottom:38px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:""; position:absolute; left:-33px; top:4px;
+    width:9px; height:9px; border-radius:50%;
+    background:var(--bg); border:2px solid var(--accent);
+  }
+  .tl-head{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px; margin-bottom:4px;}
+  .tl-head h3{font-size:17px; font-weight:700;}
+  .tl-date{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted);}
+  .tl-sub{color:var(--muted); font-size:13.5px; margin-bottom:10px;}
+  .tl ul{padding-left:18px; color:#C7CBD1; font-size:14.5px;}
+  .tl li{margin-bottom:6px;}
+
+  .proj-grid{display:grid; gap:18px;}
+  .proj-card{
+    border:1px solid var(--line); border-radius:10px;
+    background:var(--bg-elev);
+    padding:26px 26px 22px;
+    transition:border-color .15s, transform .15s;
+  }
+  .proj-card:hover{border-color:#2c3440; transform:translateY(-2px);}
+  .proj-top{display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap; margin-bottom:8px;}
+  .proj-top h3{font-size:18px; font-weight:700;}
+  .proj-client{font-size:12.5px; color:var(--muted); margin-top:2px;}
+  .metric-tag{
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:600;
+    color:var(--accent); border:1px solid var(--accent-dim);
+    background:rgba(94,234,212,0.06);
+    padding:4px 10px; border-radius:4px;
+    white-space:nowrap;
+  }
+  .proj-desc{color:#C7CBD1; font-size:14.5px; margin:12px 0 14px;}
+  .proj-stack{display:flex; flex-wrap:wrap; gap:7px;}
+  .proj-stack span{
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--muted);
+    border:1px solid var(--line); border-radius:4px; padding:3px 8px;
+  }
+
+  footer{border-top:1px solid var(--line); padding:64px 0 48px;}
+  .contact-grid{display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px;}
+  footer h2{font-size:clamp(26px,4vw,38px); max-width:480px;}
+  .contact-links{display:flex; gap:14px; flex-wrap:wrap;}
+  .foot-bottom{margin-top:48px; padding-top:24px; border-top:1px solid var(--line); display:flex; justify-content:space-between; color:var(--muted); font-size:12.5px; font-family:'JetBrains Mono',monospace; flex-wrap:wrap; gap:10px;}
+
+  .contact-form{max-width:560px;}
+  .form-row{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:560px){ .form-row{grid-template-columns:1fr;} }
+  .form-field{margin-bottom:16px; display:flex; flex-direction:column; gap:6px;}
+  .form-field label{
+    font-family:'JetBrains Mono',monospace; font-size:11.5px;
+    letter-spacing:0.06em; text-transform:uppercase; color:var(--muted);
+  }
+  .form-field input, .form-field textarea{
+    background:var(--bg-elev);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:11px 14px;
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    resize:vertical;
+    transition:border-color .15s;
+  }
+  .form-field input::placeholder, .form-field textarea::placeholder{color:#4A5159;}
+  .form-field input:focus, .form-field textarea:focus{
+    outline:none; border-color:var(--accent);
+  }
+  .form-note{
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted);
+    margin-top:12px;
+  }
+
+  .reveal{opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">SHALINI<span>_V</span></div>
+    <div class="navlinks">
+      <a href="#work">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">model status: deployed</div>
+      <h1>Building AI systems that <span class="hl">see, read, and decide</span> — in production.</h1>
+      <p class="lead">AI/ML Engineer specializing in computer vision and LLM-based systems. I fine-tune detection models, build RAG pipelines, and ship them on real AWS infrastructure for real clients.</p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View projects →</a>
+        <a href="#contact" class="btn btn-ghost">Contact me</a>
+      </div>
+    </div>
+
+    <div class="detect-card">
+      <div class="bbox">
+        <span class="c1"></span><span class="c2"></span>
+        <div class="bbox-tag">person · 0.99</div>
+        <div class="bbox-name">Shalini V</div>
+        <div class="bbox-role">AI / ML Engineer</div>
+        <div class="bbox-meta">
+          <div><span>role</span><span>AVA Software Pvt Ltd</span></div>
+          <div><span>focus</span><span>CV · LLM · RAG</span></div>
+          <div><span>location</span><span>Chennai, IN</span></div>
+          <div><span>status</span><span style="color:var(--accent)">active</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Experience</h2>
+      <span class="count">// 3 roles</span>
+    </div>
+
+    <div class="tl">
+      <div class="tl-item reveal">
+        <div class="tl-head">
+          <h3>AI/ML Engineer — AVA Software Private Limited</h3>
+          <span class="tl-date">FEB 2026 — PRESENT</span>
+        </div>
+        <div class="tl-sub">Chennai, India · Converted to full-time following internship</div>
+        <ul>
+          <li>Own end-to-end delivery on client AI projects — dataset sourcing and annotation, model fine-tuning, AWS infrastructure provisioning, and CI/CD deployment.</li>
+          <li>Building production computer vision and LLM-based systems for enterprise clients.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-head">
+          <h3>Software Trainee Engineer — AVA Software</h3>
+          <span class="tl-date">AUG 2025 — JAN 2026</span>
+        </div>
+        <div class="tl-sub">Chennai, India</div>
+        <ul>
+          <li>Completed structured training in LLMs, RAG, Python, SQL, and Transformer architectures.</li>
+          <li>Applied training directly to a live client project built the AHM mortgage chatbot using LLM and RAG, deployed via Terraform and CI/CD.</li>
+          <li>Performance led to conversion into a full-time role.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-head">
+          <h3>Machine Learning Intern — Arjun Vision Tech Solutions</h3>
+          <span class="tl-date">JUN 2024 — JUL 2024</span>
+        </div>
+        <div class="tl-sub">Chennai, India</div>
+        <ul>
+          <li>Fine-tuned ML models for structured datasets; built REST APIs to integrate models into web dashboards.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Company projects</h2>
+      <span class="count">// 5 shipped</span>
+    </div>
+
+    <div class="proj-grid">
+
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <div>
+            <h3>Solar Installation Quality Check System</h3>
+            <div class="proj-client">Client: eEquals</div>
+          </div>
+          <span class="metric-tag">74 mAP</span>
+        </div>
+        <p class="proj-desc">Automated solar installation validation end to end. With no client-provided training data, sourced and augmented a 500-image dataset from scratch, then fine-tuned an RF-DETR model over 40 epochs to detect panels and components routed through AWS Bedrock LLMs for NEC compliance checks.</p>
+        <div class="proj-stack"><span>Python</span><span>RF-DETR</span><span>AWS Bedrock</span><span>Computer Vision</span></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <div>
+            <h3>Transformer Component Detection System</h3>
+            <div class="proj-client">Internal remote intelligent inspection system</div>
+          </div>
+          <span class="metric-tag">15,000+ imgs</span>
+        </div>
+        <p class="proj-desc">Computer vision pipeline for automated power transformer analysis. Personally annotated 500 images and trained custom YOLO models on a 15,000+ image dataset on AWS SageMaker, with a classification layer routing images to specialized detectors by transformer type.</p>
+        <div class="proj-stack"><span>Python</span><span>YOLO</span><span>AWS SageMaker</span><span>AWS S3</span></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <div>
+            <h3>AI Powered BI Platform Chatbot</h3>
+            <div class="proj-client">Client: Absolute Home Mortgage</div>
+          </div>
+          <span class="metric-tag">RAG and LLM</span>
+        </div>
+        <p class="proj-desc">AI-powered chatbot answering business queries in natural language. Built the SuperInsight feature converting user questions into structured API requests against Encompass data fields, with AWS infra provisioned via Terraform and shipped through CI/CD.</p>
+        <div class="proj-stack"><span>Python</span><span>LLM</span><span>RAG</span><span>Terraform</span><span>AWS</span></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <div>
+            <h3>Multilingual Translation Platform</h3>
+            <div class="proj-client">Client: Airbnb</div>
+          </div>
+          <span class="metric-tag">multi-lang</span>
+        </div>
+        <p class="proj-desc">Wrapper APIs for AI-based translation services with fine-tuned model integration, enabling automatic content translation across web pages with automatic source-language detection.</p>
+        <div class="proj-stack"><span>Python</span><span>NLP</span><span>LoRA</span><span>LangDetect</span></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <div>
+            <h3>NeuralHub</h3>
+            <div class="proj-client">Internal company project</div>
+          </div>
+          <span class="metric-tag">cost-aware</span>
+        </div>
+        <p class="proj-desc">Cloud planning module for an internal AI project-planning platform recommends AWS architectures based on project needs, using LLMs and the Cost Explorer API to suggest cost-effective infrastructure.</p>
+        <div class="proj-stack"><span>Python</span><span>LLM</span><span>AWS</span><span>Cost Explorer API</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Skills</h2>
+      <span class="count">// stack</span>
+    </div>
+    <div class="skill-grid">
+      <div class="skill-block">
+        <h3>AI / ML</h3>
+        <div class="chip-row">
+          <span class="chip">RF-DETR</span><span class="chip">YOLO</span><span class="chip">Deep Learning</span>
+          <span class="chip">Transformers</span><span class="chip">LLMs</span><span class="chip">RAG</span>
+          <span class="chip">Computer Vision</span><span class="chip">NLP</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <h3>Cloud & DevOps</h3>
+        <div class="chip-row">
+          <span class="chip">AWS SageMaker</span><span class="chip">AWS Bedrock</span><span class="chip">EC2 / ECS / EKS</span>
+          <span class="chip">S3</span><span class="chip">Terraform</span><span class="chip">Docker</span><span class="chip">CI/CD</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <h3>Languages & Frameworks</h3>
+        <div class="chip-row">
+          <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">Java</span>
+          <span class="chip">TensorFlow</span><span class="chip">OpenCV</span><span class="chip">scikit-learn</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <h3>Tools</h3>
+        <div class="chip-row">
+          <span class="chip">Git</span><span class="chip">Jupyter</span><span class="chip">Google Colab</span><span class="chip">GitHub Actions</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:32px;">
+      <h2>Let's build something that ships.</h2>
+      <span class="count">// send a message</span>
+    </div>
+
+    <form id="contactForm" class="contact-form">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="fromName">Your name</label>
+          <input type="text" id="fromName" name="fromName" placeholder="Your name" required>
+        </div>
+        <div class="form-field">
+          <label for="fromEmail">Your email</label>
+          <input type="email" id="fromEmail" name="fromEmail" placeholder="you@example.com" required>
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="msgSubject">Subject</label>
+        <input type="text" id="msgSubject" name="msgSubject" placeholder="Project inquiry" required>
+      </div>
+      <div class="form-field">
+        <label for="msgBody">Message</label>
+        <textarea id="msgBody" name="msgBody" rows="5" placeholder="Tell me about the project or role..." required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="border:none; cursor:pointer;">Send message →</button>
+      <p class="form-note">Opens your email app with this filled in, addressed to shalini280503@gmail.com — just hit send.</p>
+    </form>
+
+    <div class="contact-links" style="margin-top:28px;">
+      <a href="https://www.linkedin.com/in/shalini-venkatesan-779a7a281/" class="btn btn-ghost" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/shalini-venkatesan" class="btn btn-ghost" target="_blank" rel="noopener">GitHub</a>
+    </div>
+
+    <div class="foot-bottom">
+      <span>SHALINI_V © 2026</span>
+      <span>Chennai, India · +91-8015528305</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('fromName').value.trim();
+    const email = document.getElementById('fromEmail').value.trim();
+    const subject = document.getElementById('msgSubject').value.trim();
+    const message = document.getElementById('msgBody').value.trim();
+
+    const body = `From: ${name} (${email})\n\n${message}`;
+    const mailto = `mailto:shalini280503@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailto;
+  });
+
+  const items = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, {threshold:0.15});
+  items.forEach(i=>obs.observe(i));
+</script>
+
+</body>
+</html>
