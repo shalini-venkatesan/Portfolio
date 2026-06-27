@@ -452,27 +452,27 @@
       <span class="count">// send a message</span>
     </div>
 
-    <form id="contactForm" class="contact-form">
+    <form id="contactForm" class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
       <div class="form-row">
         <div class="form-field">
           <label for="fromName">Your name</label>
-          <input type="text" id="fromName" name="fromName" placeholder="Your name" required>
+          <input type="text" id="fromName" name="name" placeholder="Your name" required>
         </div>
         <div class="form-field">
           <label for="fromEmail">Your email</label>
-          <input type="email" id="fromEmail" name="fromEmail" placeholder="you@example.com" required>
+          <input type="email" id="fromEmail" name="email" placeholder="you@example.com" required>
         </div>
       </div>
       <div class="form-field">
         <label for="msgSubject">Subject</label>
-        <input type="text" id="msgSubject" name="msgSubject" placeholder="Project inquiry" required>
+        <input type="text" id="msgSubject" name="subject" placeholder="Project inquiry" required>
       </div>
       <div class="form-field">
         <label for="msgBody">Message</label>
-        <textarea id="msgBody" name="msgBody" rows="5" placeholder="Tell me about the project or role..." required></textarea>
+        <textarea id="msgBody" name="message" rows="5" placeholder="Tell me about the project or role..." required></textarea>
       </div>
       <button type="submit" class="btn btn-primary" style="border:none; cursor:pointer;">Send message →</button>
-      <p class="form-note">Opens your email app with this filled in, addressed to shalini280503@gmail.com — just hit send.</p>
+      <p class="form-note">Your message will be sent directly to shalini280503@gmail.com</p>
     </form>
 
     <div class="contact-links" style="margin-top:28px;">
@@ -488,18 +488,6 @@
 </footer>
 
 <script>
-  document.getElementById('contactForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    const name = document.getElementById('fromName').value.trim();
-    const email = document.getElementById('fromEmail').value.trim();
-    const subject = document.getElementById('msgSubject').value.trim();
-    const message = document.getElementById('msgBody').value.trim();
-
-    const body = `From: ${name} (${email})\n\n${message}`;
-    const mailto = `mailto:shalini280503@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
-  });
-
   const items = document.querySelectorAll('.reveal');
   const obs = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
